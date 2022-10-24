@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/*_body태그에 style 쓰기 */
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  
+    /* vh: viewport height
+           현재 기기(브라우저)의 높이
+           % 단위로 지정 */
+}
+
+main .logo-area{
+    text-align: center;  /*_ 이미지는 inline -> text-align이 적용됨 */
+    margin-bottom: 30px;
+}
+
+.logo-area img{
+    width: 150px;
+}
+
+.input-box{
+    width: 300px;
+    margin: 20px 0 40px;
+}
+
+.input-box input{
+    border: 0; /* none */
+    border-bottom: 2px solid black;
+    width: 100%;  /*_input칸이 좌우로 넓어짐 */
+    padding: 15px 0;
+    font-size: 18px;
+}
+
+.input-box input:focus{
+    outline: 0; /* none */
+    border-bottom-color: lightblue; /* _입력할 때 줄 색 변경 */
+}
+
+.login-btn{
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    background-color: #455ba8;
+    border: 0;
+    color: white;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.login-btn:active{
+    transform: scale(0.98);
+}
+
+#saveId{ display: none; }
+
+#saveId + label{
+    display: flex;
+    cursor: pointer;
+}
+
+#saveId + label > i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ccc;
+
+    border-radius: 50%;
+    color: #ccc;
+    /* font-size: 1.05em; */
+
+    margin-right: 10px;
+}
+
+/* 체크박스 체크 시 아이콘  */
+#saveId:checked + label > i{
+    background-color: #455ba8;
+    border-color: #455ba8;
+    color: white;
+}
+
+.saveId-area{
+    margin-top: 10px;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.text-area{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.text-area a{
+    text-decoration: none;
+    color: black;
+    margin: 0 20px;
+}
+
+
+
+
+
+
