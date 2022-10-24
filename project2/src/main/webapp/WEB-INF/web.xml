@@ -18,8 +18,7 @@
 
 	<!-- Processes application requests -->
 	<!-- 
-		서버를 start 하자마자 dispatcherServlet을 생성하는데
-		
+		서버를 start 하자마자 dispatcherServlet을 생성하는데...
 	  -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
