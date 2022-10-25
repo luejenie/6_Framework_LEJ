@@ -2,10 +2,18 @@ package edu.kh.project.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import edu.kh.project.member.model.service.MemberService;
+import edu.kh.project.member.model.service.MemberServiceImpl;
+import edu.kh.project.member.model.vo.Member;
 
 // 회원 관련 요청을 받는 컨트롤러
 
@@ -20,6 +28,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MemberController {
+	
+	// * 공용으로 사용할 Service 객체 생성 *
+	
+	// @Autowired
+	// bean scanning을 통해 bean으로 등록된 객체 중
+	// 알맞은 객체를 DI(의존성 주입) 해주는 어노테이션
+	
+	// 자동 연결 규칙 : 타입이 같거나 상속 관계인 bean을 자동으로 DI
+	
+	
+	@Autowired
+	private MemberService service; 	
+	
+	
 
 	//	@RequestMapping : 클라이언트의 요청을 처리할 클래스/메서드를 지정하는 어노테이션
 	//					== Handler Mapping
@@ -45,24 +67,26 @@ public class MemberController {
 	}
 	
 	
+/*
+	 2. @RequestParam 어노테이션 사용
+	 - 메서드 매개변수에 전달받은 파라미터를 주입하는 어노테이션
 	
-	// 2. @RequestParam 어노테이션 사용
-	// - 메서드 매개변수에 전달받은 파라미터를 주입하는 어노테이션
+     [속성]
+     value : 전달 받은 input 태그의 name 속성값
+   
+     required : 입력된 name 속성값 파라미터 필수 여부 지정(기본값 true)
+     -> required = true인 파라미터가 존재하지 않는다면 400 Bad Request 에러 발생
+     -> required = true인 파라미터가 null인 경우에도 400 Bad Request
+   
+     -> required = false인 경우 전달된 파라미터가 없으면 null  //ture인 경우 입력 안하면 빈칸.
+
+     defaultValue : 파라미터 중 일치하는 name 속성 값이 없을 경우에 대입할 값 지정.
+     -> required = false인 경우 사용
+
+	 * @RequestParma 생략하기 *
+	 조건 : 매개변수 이름 == input name 속성 값이 같으면 생략할 수 있음.
 	
-    // [속성]
-    // value : 전달 받은 input 태그의 name 속성값
-   
-    // required : 입력된 name 속성값 파라미터 필수 여부 지정(기본값 true)
-    // -> required = true인 파라미터가 존재하지 않는다면 400 Bad Request 에러 발생
-    // -> required = true인 파라미터가 null인 경우에도 400 Bad Request
-   
-    // -> required = false인 경우 전달된 파라미터가 없으면 null  //ture인 경우 입력 안하면 빈칸.
-
-    // defaultValue : 파라미터 중 일치하는 name 속성 값이 없을 경우에 대입할 값 지정.
-    // -> required = false인 경우 사용
-
-	// * @RequestParma 생략하기 *
-	// 조건 : 매개변수 이름 == input name 속성 값이 같으면 생략할 수 있음.
+ */
 		
 	
 //	@RequestMapping(value="/member/login", method=RequestMethod.POST)
@@ -80,7 +104,7 @@ public class MemberController {
 	
 	
 	// @RequestParam 생략을 이용해서 짧게 코드 작성 가능
-	@RequestMapping(value="/member/login", method=RequestMethod.POST)
+//	@RequestMapping(value="/member/login", method=RequestMethod.POST)
 	public String login(String inputEmail, String inputPw) {  
 		
 		System.out.println(inputEmail);
@@ -89,6 +113,51 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	
+	// 	== @RequestMappging(value="/member/login", method=RequestMethod.POST)
+	//	@PostMapping("/member/login") // POST 방식의 /member/login 요청을 연결
+	//	@GetMapping("/member/login") // GET 방식의 /member/login 요청을 연결
+		
+	
+	/* 3. @ModelAttribute 어노테이션 이용
+	
+		[작성법]
+		@ModelAttribute VO타입 매개변수명
+		-> 파라미터의 name 속성 값이 
+		   지정된 VO의 필드명과 같다면
+		   해당 VO 객체의 필드에 파라미터를 세팅
+
+		[조건]
+		1. name 속성 값과 필드명이 같아야 함.
+		2. VO에 반드시 기본 생성자가 존재해야 함.
+		3. VO에 반드시 setter가 존재해야 함.
+	
+	*/
+	
+	
+	// * @ModelAttribute 어노테이션 생략도 가능!  __자동으로 인식
+	// == 커맨드 객체☆
+	
+	@PostMapping("/member/login")   //__똑같은 주소에, 똑같은 요청방식 중복xxxx
+	public String login(/*@ModelAttribute*/ Member inputMember) {
+		
+		//System.out.println(inputMember);
+		
+		// Servlet 프로젝트 
+		// Service 객체 생성
+		// try ~ catch 내부에 코드 작성
+		   
+		// Spring 프로젝트
+		// 서비스 호출 후 결과 반환 받기
+		Member loginMember = service.login(inputMember);
+		
+		// 로그인 성공 시 loginMember를 세션에 추가
+		// 로그인 실패 시 "아이디 또는 비밀번호가 일치하지 않습니다" 세션에 추가
+		
+		
+		
+		return "redirect:/";
+	}
 	
 	
 	
