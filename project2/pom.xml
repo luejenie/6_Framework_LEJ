@@ -90,7 +90,7 @@
 		
 		<!-- DBCP (커넥션풀)
 					_ DB 접속할 수 있는 수가 정해져 있어 부하를 예방. 
-					- 기존 CONNECTION이 일회용이면, 이건 재활용하는 개념 -->
+					_ 기존 CONNECTION이 일회용이면, 이건 재활용하는 개념 -->
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>

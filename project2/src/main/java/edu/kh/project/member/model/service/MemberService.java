@@ -26,6 +26,13 @@ public interface MemberService {
 	 */
 	public abstract Member login(Member inputMember);   //_추상메서드 생성
 
+	
+	/** 회원 가입 서비스
+	 * @param inputMember
+	 * @return result
+	 */
+	public abstract int signUp(Member inputMember);
+
 
 
 }

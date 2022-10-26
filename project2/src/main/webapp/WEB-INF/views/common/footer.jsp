@@ -26,13 +26,19 @@
     <%-- session scope에 message 속성이 존재하는 경우
           alter창을 이용해서 내용을 출력 --%> <%-- not empty 또는 !empty --%>
 
-    <c:if test="${ not empty sessionScope.message }"> 
+    <c:if test="${ not empty message }"> 
         <script>
-            alert("${sessionScope.message}");
+            alert("${message}");
         </script>
 
            <%--// session에 계속 남아있어서 새로고침하거나 로그인할 때도 message가 출력됨. session에서 삭제하기 --%> 
-        <%-- message 1회 출력 후 session scope에서 삭제 --%>
-        <c:remove var="message" scope="session" />
+        <%--// message 1회 출력 후 scope="session"의 (session) 삭제 --> 스프링 쓰면서 session삭제 --%>
+        
+        <%-- message 1회 출력 후 모든 scope 삭제 --%>
+        <c:remove var="message" />
+
+        <%-- //session에 남았다면 알림창 뜨고 나서 새로고침할 때마다 뜸--%>
+        <%-- //request에 남아서 한 번 뜨고 삭제 됨 --%>
+
     </c:if>
     

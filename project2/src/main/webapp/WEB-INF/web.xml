@@ -42,5 +42,25 @@
 							_모든 요청을 dispatcherServlet이 받아들이고 그 설정을 servelt-context.xml에 적어놓음)-->
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	
+	
+	<!-- 한글 깨짐 방지를 위한 인코딩 필터 추가 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>  <!-- 초기 파라미터 값 -->
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param> 	
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>  <!--모든 요청에 대해서 encodingFilter를 적용하겠다. -->
+	</filter-mapping>
+	
+	
+	
 
 </web-app>
