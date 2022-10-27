@@ -21,4 +21,47 @@
 		</resultMap>
 
 
+		<!-- 회원 정보 수정 -->								<!-- 별칭 : myBatis.xml에 작성 -->
+		<update id="updateInfo" parameterType="Member">
+			UPDATE "MEMBER" SET
+			MEMBER_NICKNAME = #{memberNickname},
+			MEMBER_TEL = #{memberTel},
+			MEMBER_ADDRESS = #{memberAddress}
+			WHERE MEMBER_NO = #{memberNo}
+		</update>
+		
+		
+		<!-- 암호화된 비밀번호 조회 -->									<!--// 조회 결과가 여러개일 경우는 resultMap -->
+		<select id="selectEncPw" parameterType="_int" resultType="string">  <!--//기본자료형 Integer의 별칭은 _int  -->
+			SELECT MEMBER_PW 
+			FROM "MEMBER"
+			WHERE MEMBER_NO = #{memberNo}
+		</select>
+		
+		
+		<!--  
+				parameterType 속성은
+				<select> : 필수 작성
+				<insert> / <update> / <delete> : 선택 (Type Handler가 알아서 판단)
+				
+			
+		 -->
+		
+		<!-- 비밀번호 변경 (parameterType="map")--> 	
+		<update id="changePw">
+			UPDATE "MEMBER" SET
+			MEMBER_PW = #{newPw}
+			WHERE MEMBER_NO = #{memberNo} 
+		</update>
+		<!-- 파라미터가 Map인 경우 key값만 작성하면 값을 얻어옴 -->
+		
+		
+		
+		<!-- 회원 탈퇴 -->
+		<update id="memberDelete">
+			UPDATE "MEMBER" SET
+			MEMBER_DEL_FL = 'Y'
+			WHERE MEMBER_NO = #{memberNo}
+		</update>
+	
 </mapper>
