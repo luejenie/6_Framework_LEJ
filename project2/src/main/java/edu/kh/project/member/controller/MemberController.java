@@ -76,7 +76,7 @@ public class MemberController {
 		
 		// /WEB-INF/views/null.jsp
 		
-		// * forward 방법 : 요청 위임, prefix/siffix를 제외한 나머지 jps 경로
+		// * forward 방법 : 요청 위임, prefix/suffix를 제외한 나머지 jsp 경로
 		// * redirect 방법 : 재요청, "redirect:요청주소";
 
 		return "redirect:/";  //_메인페이지로 돌아감
