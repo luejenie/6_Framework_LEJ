@@ -44,7 +44,17 @@
 
                         <!-- 로그인 영역 전체를 form태그로 만듦 -->
                                     <%-- 절대 경로 (/빠지면 상대경로) _ID, PW가 이 경로로 제출됨--%>
-                        <form action="/member/login" name="login-frm" method="POST">
+                        <form action="/member/login" name="login-frm" method="POST" 
+                                    onsubmit="return loginValidate();">
+                                    <%-- 
+                                        form태그의 submit 이벤트를 취소시키는 방법1
+
+                                        1. 인라인 이벤트 모델의 결과로 false를 리턴하면 
+                                            제출 이벤트 취소된다.  onsubmit="return loginValidate();
+                                        
+
+
+                                     --%>
 
                             <!-- 아이디(이메일), 비밀번호, 로그인버튼 -->
                             <fieldset id="id-pw-area"><!-- #테두리 있으니가 fieldset으로 나눔 -->
@@ -71,7 +81,7 @@
 
                             <!-- label 태그 내부에 input 태그를 작성하면 자동 연결됨 -->
                             <label>
-                                <input type="checkbox" name="saveId" ${temp}> 아이디 저장
+                                <input type="checkbox" id="saveId" name="saveId" ${temp}> 아이디 저장
                                                                     <%-- 쿠키가 없으면 null이 됨 -> el은 null을 빈칸으로 처리 --%>
                             </label>
 
@@ -115,7 +125,7 @@
     <%-- footer.jsp 포함 코드 --%>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-  
+  <script src="/resources/js/main.js"></script>
 
 </body>
 </html>
