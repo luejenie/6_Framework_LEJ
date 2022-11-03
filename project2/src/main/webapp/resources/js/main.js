@@ -6,6 +6,8 @@ const saveId = document.getElementById("saveId");
 // radio, checkbox 값이 변할 때 발생하는 이벤트 : change
 saveId.addEventListener("change", function(){
 
+    // console.log(event);
+
     // change는 체크가 되거나 해제될 때 이벤트 발생
     // -> 체크되었는지 별도 검사 필요
 
@@ -70,10 +72,8 @@ function loginValidate(){
         memberPw.focus(); // 비밀번호 input 요소에 초점을 맞춤.
         memberPw.value=""; // 비밀번호 input 요소에 작성된 값을 모두 삭제 (_띄어쓰기 등 삭제)
 
-        return false;
+        return false;  //_제출 못하게 막음. main.jsp form태그에서 onsubmit="return false"로.
     }
-    
-
 
     return true;
 }

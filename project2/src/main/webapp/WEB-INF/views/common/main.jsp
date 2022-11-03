@@ -51,8 +51,6 @@
 
                                         1. 인라인 이벤트 모델의 결과로 false를 리턴하면 
                                             제출 이벤트 취소된다.  onsubmit="return loginValidate();
-                                        
-
 
                                      --%>
 
