@@ -30,13 +30,13 @@
 
                 <div class="signUp-input-area">
                     <input type="text" name="memberEmail" id="memberEmail" 
-                     placeholder="아이디(이메일)" maxlength="20" autocomplete="off" required
+                     placeholder="아이디(이메일)" maxlength="50" autocomplete="off" required
                      value="${tempMember.memberEmail}">
                      <%--//tempMember: request scope 다른 페이지로 이동하면 사라짐. --%>
 
                     <button type="button">인증번호 받기</button>
                 </div>
-                <span class="signUp-message">메일을 받을 수 있는 이메일을 입력해주세요.</span>
+                <span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
                 
 
                 <!-- 인증번호 입력 -->
@@ -60,13 +60,13 @@
 
                 <div class="signUp-input-area">
                     <input type="password" name="memberPw" id="memberPw" 
-                     placeholder="비밀번호" maxlength="20" required>  <!-- 패스워드는 autocomplete이 불가 -->
+                     placeholder="비밀번호" maxlength="20" autocomplete="off" required>  <!-- 패스워드는 autocomplete이 불가 -->
                 </div>
                 <div class="signUp-input-area">    
                      <input type="password" name="memberPwConfirm" id="memberPwConfirm" 
-                     placeholder="비밀번호 확인" maxlength="20" required>
+                     placeholder="비밀번호 확인" maxlength="20" autocomplete="off" required>
                 </div>
-                <span class="signUp-message error">비밀번호가 일치하지 않습니다.</span>
+                <span class="signUp-message" id="pwMessage">영어, 숫자, 특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span>
                 
 
                 <!-- 닉네임 입력 -->
@@ -79,7 +79,7 @@
                      placeholder="닉네임" maxlength="10" required
                      value=${tempMember.memberNickname}> 
                 </div>
-                <span class="signUp-message confirm">사용 가능한 닉네임 입니다.</span>
+                <span class="signUp-message" id="nickMessage">한글, 영어, 숫자로만 2~10글자</span>
                 
 
                 <!-- 전화번호 입력 -->
@@ -92,7 +92,7 @@
                      placeholder="(- 없이 숫자만 입력)" maxlength="11" required
                      value="${tempMember.memberTel}"> 
                 </div>
-                <span class="signUp-message error">전화번호 형식이 올바르지 않습니다.</span>
+                <span class="signUp-message" id="telMessage" >전화번호를 입력해주세요.(- 제외)</span>
                 
 
     
@@ -154,5 +154,6 @@
         }
     </script>
 
+    <script src="/resources/js/member/signUp.js"></script>
 </body>
 </html>
