@@ -154,6 +154,12 @@
         }
     </script>
 
+                                    <%-- // 실제로는 많이 사용하지 않고 다운받아서 js 폴더에 넣어놓음 --%>
+    <%-- jQuery 라이브러리(.js 파일) 추가 (CDN 방식 (Content Delivery Network)) --%>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <%-- //singUp.jsp가 로드될 때 인터넷에서 제이쿼리가 다운받아져 사용 --%>
+
+
     <script src="/resources/js/member/signUp.js"></script>
 </body>
 </html>

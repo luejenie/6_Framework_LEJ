@@ -98,6 +98,22 @@
 		    <version>2.9.0</version>
 		</dependency>
 		
+		
+		<!-- jackson bind 
+					__ Java에서 JSON을 다룰 수 있게 하는 형식이었으나 발전되어
+					   JSON뿐만 아니라 다양한 데이터 형태를 다루는데 사용
+					__ 결과값을 그 자체 값으로 가져오도록. @ResponseBody
+		-->
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <artifactId>jackson-databind</artifactId>
+       <version>2.9.8</version>
+    </dependency>
+		
+		
+		
+		
 	
 	
 		<!-- Spring -->
