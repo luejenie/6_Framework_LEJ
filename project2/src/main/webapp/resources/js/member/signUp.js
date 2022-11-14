@@ -106,9 +106,9 @@ memberEmail.addEventListener("input", function(){
         // 선택적으로 data, type, dataType, success, error, complete, async 등을
         //  포함시킬 수 있다.
         
-        $.ajax({
-            "url":"/emailDupCheck", // 비동기 통신을 진행할 서버 요청 주소
-            data : {"memberEmail" : memberEmail.value }, // JS -> 서버로 전달할 값(여러개 가능)
+        $.ajax({  // jQuery.ajax라고 써도됨.
+            "url":"/emailDupCheck", // 비동기 통신을 진행할 서버 요청 주소  __ 필수 작성
+            data : {"memberEmail" : memberEmail.value }, // JS -> 서버로 전달할 값(여러개 가능) __객체형태
             type : "GET", // 데이터 전달 방식(GET/POST)
             success : (result) => { // 비동기 통신을 성공해서 응답을 받았을 때
                 // result : 서버로부터 전달 받은 응답 데이터
@@ -249,6 +249,8 @@ memberPwConfirm.addEventListener("input", function(){
 });
 
 
+
+
 // 닉네임 유효성 검사
 const memberNickname = document.getElementById("memberNickname");
 const nickMessage = document.getElementById("nickMessage");
@@ -270,11 +272,34 @@ memberNickname.addEventListener("input", function(){
     if(regEx.test(memberNickname.value)){ // 유효한 경우
 
         // ** 닉네임 중복검사 코드 추가 예정 **
-        
-        nickMessage.innerText = "유효한 닉네임 형식 입니다.";
-        nickMessage.classList.add("confirm");
-        nickMessage.classList.remove("error");
-        checkObj.memberNickname = true;
+        const param = { "memberNickname" : memberNickname.value}; 
+
+        $.ajax({  //_자바스크립트 객체가 들어감
+            url: '/nicknameDupCheck',   //_직접 지정, 여기서 먼저 지정
+            data: param,    //_ 값이 많을 때는 여기에 직접 적지 않고 따로적어서 가져와도 됨.
+            //type: "GET",    // type 미작성 시 기본값 GET   __여기까지만 작성해도 에이젝스 실행가능
+            success : (res) => {    //_success, error -> 함수 호출 가능
+                    // 매개변수 res == 서버 비동기 통신 응답 데이터 
+                    // console.log("res : " + res);
+
+                if(res == 0){
+                    nickMessage.innerText = "사용 가능한 닉네임 입니다.";
+                    nickMessage.classList.add("confirm");
+                    nickMessage.classList.remove("error");
+                    checkObj.memberNickname = true;
+                } else {
+                    nickMessage.innerText = "이미 사용중인 닉네임 입니다.";
+                    nickMessage.classList.add("error");
+                    nickMessage.classList.remove("confirm");
+                    checkObj.memberNickname = false;
+                }
+            },
+            error : () => {
+                console.log("닉네임 중복 검사 실패");
+            },
+            complete : tempFn   //_외부에서 함수 선언하고 함수 모양 그대로 출력하게끔 ()빼고 적으면 함수로 실행.
+        })
+     
 
     } else { // 유효하지 않을 경우
         nickMessage.innerText = "닉네임 형식이 유효하지 않습니다.";
@@ -283,6 +308,18 @@ memberNickname.addEventListener("input", function(){
         checkObj.memberNickname = false;
     }
 });
+
+
+//_ 함수 선언, 정의
+//_ tempFn  -- 함수 모양 그대로 출력
+//_ tempFn() 차이  -- 결과 출력 (닉네임 검사 완료)
+function tempFn(){
+    console.log("닉네임 검사 완료");
+}
+
+
+
+
 
 
 // 전화번호 유효성 검사

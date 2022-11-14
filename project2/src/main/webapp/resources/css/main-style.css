@@ -471,3 +471,19 @@ label[for='header-menu-toggle']:hover{
     margin: 0;
     color: gray;
 }
+
+
+/* 10초마다 모든 회원 정보 조회(AJAX) */
+#content-1-2{
+    width: 500px;
+    margin: 50px auto;
+}
+
+.secession{
+    background-color: #ccc;
+}
+
+.secession > td:first-of-type{
+    /* 가운데 선 */
+    text-decoration: line-through;
+}

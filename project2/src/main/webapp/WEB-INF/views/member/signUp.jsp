@@ -158,6 +158,7 @@
     <%-- jQuery 라이브러리(.js 파일) 추가 (CDN 방식 (Content Delivery Network)) --%>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <%-- //singUp.jsp가 로드될 때 인터넷에서 제이쿼리가 다운받아져 사용 --%>
+    <%-- //script보다 위에 작성되어야 함. --%>
 
 
     <script src="/resources/js/member/signUp.js"></script>

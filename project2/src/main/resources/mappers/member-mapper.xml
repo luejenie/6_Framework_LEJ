@@ -21,6 +21,8 @@
 																											  별칭 -> mybatis-config.xml에서 지정
 				id : resultMap을 식별할 이름
 				
+			
+			//_해당 mapper에서 밖에 사용 못함. 다른데서 사용하고 싶으면 새로운 mapper에 넣어줘야함.
 	 -->
 
 		<!-- <resultMap type="edu.kh.project.member.model.vo.Member" id="member_rm"> -->		
