@@ -2,6 +2,8 @@ package edu.kh.project.member.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.service.MyPageService;
@@ -198,7 +201,59 @@ public class MyPageController {
 	}
 	
 	
+	// 프로필 화면 이동
+	@GetMapping("/profile")
+	public String profile() {
+			// webapp 폴더 기준으로 JSP 경로 작성
+		return "member/myPage-profile";    //_controller에서 return은 기본적으로 foward를 의미
+	}
 	
+	
+	
+	// MultipartFile
+	// - MultipartResolver에 의해서 반환된
+	//   input type = "file"의 값을 저장한 객체
+	// 
+	// - 제공 메서드
+	// 1) getOriginalFilename() : 파일 원본명
+	// 2) getSize() : 파일 크기
+	// 3) transferTo() : 메모리에 임시 저장된 파일을 지정된 경로에 저장
+	
+	
+	// 프로필 이미지 수정
+	@PostMapping("/updateProfile")
+	public String updateProfile(@RequestParam(value="profileImage") MultipartFile profileImage, /*업로드된 파일*/
+								@SessionAttribute("loginMember") Member loginMember, /*로그인 회원 정보*/
+															//_세션에 로그인멤버 얻어와서 Member loginMember에 저장하겠다.
+								RedirectAttributes ra, /* 메세지 전달용*/
+								HttpServletRequest req /* 저장할 서버 경로 _얻어낼 때 필요*/
+								) throws Exception {
+
+		// ** 업로드된 이미지를 프로젝트 폴더 내부에 저장하는 방법 **
+		// 1) servers -> 지정된 서버 설정 -> Serve modules without publishing 체크
+		// 2) 파일을 저장할 폴더 생성  _images > memberProfile
+		// 3) HttpServletRequest를 이용해서 저장 폴더 절대 경로 얻어오기
+		// 4) MultipartFile.transferTo()를 이용해서 지정된 경로에 파일을 저장
+		
+		//인터넷 주소로 접근할 수 있는 경로  //3)
+		String webPath = "/resources/images/memberProfile/";
+		
+		// 실제 파일이 저장된 컴퓨터 상의 절대 경로
+		String filePath = req.getSession().getServletContext().getRealPath(webPath);
+				// (getSession ~ getServletContest())application scope 객체를 얻어오는 코드
+		
+		int result = service.updateProfile(webPath, filePath, profileImage, loginMember);
+		
+		String message = null;
+		if(result > 0) message = "프로필 이미지가 변경되었습니다.";
+		else		   message = "프로필 이미지 변경 실패";
+		
+		ra.addFlashAttribute("message", message);
+		
+		
+		return "redirect:profile"; // 상대경로
+//		return "redirect: member/myPage/profile";   //절대경로
+	}
 	
 	
 	

@@ -178,3 +178,121 @@ function memberDeleteValidate(){
     return true;
 }
 
+
+
+// --------------------------------------------------
+// 프로필 수정 
+const profileImage = document.getElementById("profile-image");
+const deleteImage = document.getElementById("delete-image");
+const imageInput = document.getElementById("image-input");
+
+// 초기 프로필 이미지 상태를 저장하는 변수  _처음 들어오자마자
+// (true: 업로드된 이미지 있음 / false : 기본 이미지) 
+let initCheck;
+
+// 이미지가 업로드 되었거나 삭제되었음을 나타내는 변수
+// ( -1 : 초기값(취소) / 0 : 프로필 삭제(x버튼 클릭) / 1 : 새 이미지 업로드)
+let deleteCheck = -1;
+
+
+// 프로필 수정 페이지에 처음 들어왔을 때의 이미지 경로
+const originalImage = profileImage.getAttribute("src");  //_src 속성을 얻어옴
+
+// 프로필 수정 화면일 경우
+if(imageInput != null){
+
+    // 해당 화면 진입 시 프로필 이미지 상태를 저장(initCheck)
+    if(profileImage.getAttribute("src") == ".resources/images/user.png"){
+        // 기본이미지인 경우
+        initCheck = false;
+    } else {
+        initCheck = true;
+    }
+
+    // (프로필 이미지)
+    // 이미지가 선택되었을 때 미리보기
+
+                            //__ 이미지 넣으면 C:\\fakepath\\이미지.png
+    // * input type="file" 요소는 값이 없을 때 ''(빈칸)
+    // * input type="file" 요소는 이전에 선택한 파일이 있어도 취소하면 다시 ''(빈칸)
+    // * input type="file" 요소로 파일을 선택하면 change 이벤트가 발생한다.
+
+    imageInput.addEventListener("change", (e) => {
+
+        // e.target : 이벤트가 발생한 요소  (== imageInput)
+        // * 화살표 함수에서 this는 window 객체를 의미한다!
+        
+        // 선택된 파일의 목록   __파일이 하나면 항상 0번 인덱스
+        console.log(e.target.files);
+        console.log(e.target.files[0]);
+        
+        // 선택된 파일이 있을 경우  __ 이걸 안쓰면 파일 선택 후 취소하면 에러가 남
+        if(e.target.files[0] != undefined){
+            const reader = new FileReader();
+            // FileReader (파일 읽는 객체)
+            // -> 웹 애플리케이션이 비동기적으로 데이터를 읽기 위하여
+            //    읽을 파일을 가리키는 File 객체 
+            // - 읽어들인 파일을 사용자 컴퓨터에 저장할 수 있다.
+    
+            //     __사진을 올리기 위해서 서버에 올리는 방법도 있으나 이건 시간이 오래걸림.
+            //     __ -> url을 만들어 읽어들일 수 있게 fileReader이용 
+    
+            reader.readAsDataURL(e.target.files[0]);  
+            // FileReader.readAsDataURL("파일정보")
+            // -> 지정된 파일을  읽기 시작함.
+                  //__ e.target.files 는 사진 정보만 읽어옴.
+                  //_ readAsDateURL를 적는 순간 파일 자체를 읽어들임.
+            
+            // FileReader.onload : 파일 읽기가 완료되었을 때의 동작을 지정  __고전이벤트모델 형식
+            reader.onload = event => {
+                // console.log(event.target);
+                // event.target.result : 읽어진 파일 결과(실제 이미지 파일)의 경로
+    
+                // img 태그의 src 속성으로 읽은 이미지 파일 경로 추가
+                // == 이미지 미리보기
+                profileImage.setAttribute("src", event.target.result);
+                
+                deleteCheck = 1;
+            } 
+    
+            //_ 이미지, 동영상은 1바이트로 쪼개서 올려짐
+            //_ 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD…Lhl3lLtxilcQ7weCwwm43WFyvOX5yvONxOK3Nw45MaGLmf//Z'
+            //_  base64로 인코딩한 이미지 경로
+
+        } else {  // 취소가 눌러진 경우 __이전이미지로
+
+            // 초기 이미지로 다시 변경
+            profileImage.setAttribute("src", originalImage);
+            deleteCheck = -1;
+        }
+    });
+
+
+    // x버튼이 클릭됐을 경우 -> 기본 이미지로 변경
+    deleteImage.addEventListener("click", () => {
+        profileImage.setAttribute("src", "/resources/images/user.png");  //_기존 프로필 이미지 경로 
+        imageInput.value = '';
+        deleteCheck = 0;
+    })
+}
+
+function profileValidate(){
+
+    // 이미지가 없음  -> 있음
+    if( !initCheck && deleteCheck == 1){
+        return true;
+    }
+
+    // 있음 -> 없음(x버튼)
+    if(initCheck && deleteCheck == 0){
+        return true;
+    }
+
+    // 있음 -> 있음(새로운 이미지 업로드)
+    if(initCheck && deleteCheck == 1){
+        return true;
+    }
+
+    alert("이미지 변경 후 클릭하세요.");
+    return false;  //_나머지 경우엔 못하게.
+}

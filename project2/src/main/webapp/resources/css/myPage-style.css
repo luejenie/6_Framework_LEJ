@@ -52,7 +52,7 @@
 }
 
 .list-group > li > a:hover{
-    background-color: #f2f2f2;
+    background-color: #ccc;
 }
 
 
@@ -201,20 +201,28 @@ form[name='myPage-frm']{
     border-radius: 50%;
 
     position: relative;
+
+    overflow: hidden;  /*//넘치는 부분 숨겨라 */
+    display: flex;
+    justify-content: center;
+    align-items: center;    
 }
 
 /* 프로필 이미지 */
 #profile-image{
-    width: 100%;
     height: 100%;
-    border-radius: 50%;
 }
+
+form[name='myPage-frm']{
+    position: relative;
+}
+
 
 /* 삭제 버튼 */
 #delete-image{
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -2px;
+    right: 240px;
     cursor: pointer;
 }
 

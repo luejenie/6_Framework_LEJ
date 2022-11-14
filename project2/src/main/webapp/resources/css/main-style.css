@@ -147,6 +147,8 @@ nav{
     top : 0;
 
     background-color: white; /*_배경 기본이 투명 -> 흰색으로 만들어줌 */
+    
+    z-index: 100;
 }
 
   /* ul 스타일 지정 */

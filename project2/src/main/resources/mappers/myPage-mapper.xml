@@ -64,4 +64,14 @@
 			WHERE MEMBER_NO = #{memberNo}
 		</update>
 	
+	
+		
+		<!-- 프로필 이미지 수정 -->        <!--__파라미터타입 안써도 됨(select 제외)  -->
+		<update id="updateProfile" parameterType="Member" >
+			UPDATE "MEMBER" SET
+			PROFILE_IMG = #{profileImage}
+			WHERE MEMBER_NO = #{memberNo}
+		</update>
+	
+	
 </mapper>
