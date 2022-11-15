@@ -130,7 +130,7 @@ public class MemberController {
 	}
 	
 	
-	// 	== @RequestMappging(value="/member/login", method=RequestMethod.POST)
+	// 	== @RequestMapping(value="/member/login", method=RequestMethod.POST)
 	//	@PostMapping("/member/login") // POST 방식의 /member/login 요청을 연결
 	//	@GetMapping("/member/login") // GET 방식의 /member/login 요청을 연결
 		
@@ -158,7 +158,7 @@ public class MemberController {
 	// * 참고 *
 	// Controller 메서드 매개변수에 객체를 작성하면
 	// 자동으로 생성되거나 얻어올 수 있는 이유
-	// -> Spring Container에서 Arumnent Resolver(매개변수 해결사) 제공해서(내장)
+	// -> Spring Container에서 Argument Resolver(매개변수 해결사) 제공해서(내장)
 	//	  유연하게 처리함.
 	
 	
@@ -249,7 +249,7 @@ public class MemberController {
 		} else {
 			
 			// 기존 : HttpServletRequest req; 
-			//		  path = req.getHeader("referer);
+			//		  path = req.getHeader("referer");
 			// 새로운 방법 : @RequestHeader(value="referer") String referer
 			//				 path = referer;
 			path = referer;  // 로그인 요청 전 페이지 주소(referer)
