@@ -28,12 +28,12 @@
             </section>
 
             <section>
-	            <!-- 헤더 오른쪽 상단 메뉴 
-	                (메인페이지 | 로그인 / (로그인후) 닉네임▼ (내정보, 로그아웃)_드롭다운메뉴 -->
-	            <div id="header-top-menu">
-	                <c:choose>
-	                    <%-- 로그인 X인 경우 --%>
-	                    <c:when test="${empty sessionScope.loginMember}">
+            <!-- 헤더 오른쪽 상단 메뉴 
+                (메인페이지 | 로그인 / (로그인후) 닉네임▼ (내정보, 로그아웃)_드롭다운메뉴 -->
+                <div id="header-top-menu">
+                    <c:choose>
+                        <%-- 로그인 X인 경우 --%>
+                         <c:when test="${empty sessionScope.loginMember}">
 	                        <a href="/"> 메인 페이지 </a>
 	                        |
 	                        <a href="/member/login">로그인</a>
@@ -46,11 +46,11 @@
 	                            <i class="fa-solid fa-caret-down"></i>        
 	                        </label>
 	
-	                        <input type="checkbox" id="header-menu-toggle">
+                            <input type="checkbox" id="header-menu-toggle">
 	
 	                        <div id="header-menu">
-	                            <a href="/member/myPage/info">내정보</a>
-	                            <a href="/member/logout">로그아웃</a>
+                                <a href="/member/myPage/info">내정보</a>
+                                <a href="/member/logout">로그아웃</a>
 	                        </div>
 	                    </c:otherwise>
 	                </c:choose>
@@ -72,18 +72,20 @@
                 <li><a href="#">FAQ</a></li>
                 <li><a href="#">1:1문의</a></li> --%>
 
-                <c:forEach var="boardType" items="${boardTypeMap}">
-                    <%-- 
-                        EL을 이용해서 Map 데이터를 다루는 방법 
-                        key ==> ${변수명.key}
-                        value ==> ${변수명.value}
-                    
-                    --%>
-
-                <li><a href="/board/${boardType.key}/list">${boardType.value}</a></li>
+                <c:forEach var="boardType" items="${boardTypeList}">  <%--__정상작동하면 application에 올라와 있음 // intercetor 만든 이후--%>
+                    <li>  
+                        <a href="/board/${boardType.BOARD_CODE}">${boardType.BOARD_NAME}</a> <%-- __ DB의 컬럼명을 그대로 써주기 --%>
+                    </li>
                 </c:forEach>
-
             </ul>
         </nav>
 
+<%--  ___
+    /board/1 
+    /board/2 
+    /board/3 
+    /board/4 
+        ...
 
+    주소에서 값 추출해서 사용
+--%>

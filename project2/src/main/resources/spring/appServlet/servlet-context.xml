@@ -60,5 +60,15 @@
 	<context:component-scan base-package="edu.kh.project" />
 	
 	
+	<!-- 인터셉터 등록/매핑주소 설정 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/> <!-- 모든 요청 주소 -->
+			<beans:bean id="boardTypeInterceptor" class="edu.kh.project.common.intercepter.BoardTypeInterceptor" />  <!-- // beans 태그 안에 작성하려면 이런 모양 -->
+		</interceptor>
+	</interceptors>
+	
+	
+	
 	
 </beans:beans>
