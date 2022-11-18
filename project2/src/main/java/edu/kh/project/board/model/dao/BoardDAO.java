@@ -51,10 +51,21 @@ public class BoardDAO {
 		int offset = (pagination.getCurrentPage() -1) * pagination.getLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset, pagination.getLimit());
-		
+										//_ 몇개 건너뛸지 offset에.
+									
+																	//_rowBounds가 항상 맨 뒤에 위치해야함.
 		return sqlSession.selectList("boardMapper.selectBoardList", boardCode, rowBounds);
 									// namespace.id				 ,  파라미터  , RowBounds 객체
 									//                              파라미터가 없을 경우 nuill 대입
+	}
+
+
+	/** 게시글 상세 조회 + 이미지 목록 조회 +  댓글 목록 조회
+	 * @param boardNo
+	 * @return
+	 */
+	public Board selectBoardDetail(int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectBoardDetail", boardNo);
 	}
 	
 	
