@@ -33,8 +33,5 @@
                 modal.classList.remove("show", "hide");
             }, 500);
         })
-
-
-
     }
 })()

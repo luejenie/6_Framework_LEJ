@@ -51,9 +51,41 @@ public class BoardServiceImpl implements BoardService{
 	// 게시글 상세 조회 + 이미지 목록 조회 +  댓글 목록 조회
 	@Override
 	public Board selectBoardDetail(int boardNo) {
-
-		
 		return dao.selectBoardDetail(boardNo);
 	}
+
+
+	// 조회수 증가
+	@Override
+	public int updateReadCount(int boardNo) {
+		return dao.updateReadCount(boardNo);
+	}
+
+	
+	// 좋아요 여부 체크
+	@Override
+	public int boardLikeCheck(Map<String, Object> map) {
+		return dao.boardLikeCheck(map);
+	}
+
+
+	// 좋아요 수 증가
+	@Override
+	public int boardLikeUp(Map<String, Object> paramMap) {
+		return dao.boardLikeUp(paramMap);
+	}
+
+
+	// 좋아요 수 감소
+	@Override
+	public int boardLikeDown(Map<String, Object> paramMap) {
+		return dao.boardLikeDown(paramMap);
+	}
+	
+	
+	//__ @Transactional  : 단일행 반환에는 굳이 쓸필요 없음. 어차피 하나라 실패하면 저절로 취소되기 때문
+	// 다만, service에서 dao 여러개를 실행하는 경우 rollback이 필요하기 떄문에 @transactional이 필요함!
+	
+	
 
 }
