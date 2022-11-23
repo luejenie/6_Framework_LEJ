@@ -86,8 +86,10 @@
 
             <div class="btn-area">
 
-				<!-- 로그인 상태일 경우 글쓰기 버튼 노출 -->
-                <button id="insertBtn">글쓰기</button>                     
+				<!-- 로그인 상태일 경우 글쓰기 버튼 노출 -->  <%--__sessionScope.loginMember 에서 session 생략 가능, 스코프 중에서 일치하는 값 가져옴 --%>
+                <c:if test="${not empty loginMember}">   <%-- __jstl에서 제공 / test는 EL 안에서만 쓸 수 있음 --%>
+                    <button id="insertBtn">글쓰기</button>                     
+                </c:if>
 
             </div>
 
@@ -162,6 +164,9 @@
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
+    <script>
+        const boardCode = "${boardCode}";  /* __@PathVariable */
+    </script>
     <script src="/resources/js/board/boardList.js"></script>
 
 </body>

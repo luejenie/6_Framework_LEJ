@@ -22,6 +22,7 @@ public class Board {
     private int memberNo;
     private String profileImage;
     private String thumbnail;
+    private int boardCode;  //_게시글 삽입 위해 추가
 
     
     // 이미지 목록

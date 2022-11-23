@@ -81,13 +81,30 @@ boardLike.addEventListener("click", e => {
             error : () => {console.log("감소 에러");}
         });
     }
-
-
-
-
-
-
-
-
-
 })
+
+
+// 게시글 삭제
+const deleteBtn = document.getElementById("deleteBtn");
+
+deleteBtn.addEventListener("click", () => {
+
+    if(confirm("정말 삭제하시겠습니까?")){
+
+        //  /board/{boardCode}/{boardNo}/delete  GET
+        location.href = location.pathname + "/delete";     //_href -> 무조건 GET방식
+        //              /board/1/2000/delete
+    }
+})
+
+
+// 수정 버튼
+const updateBtn = document.getElementById("updateBtn");
+
+updateBtn.addEventListener("click", () => {
+
+    // /board/{boardCode}/{boardNo}/update?cp=10
+    // 상세조회 : /board/{boardCode}/{boardNo}?cp=10
+    location.href = location.pathname + "/update" + location.search;
+                                                    // query String
+});

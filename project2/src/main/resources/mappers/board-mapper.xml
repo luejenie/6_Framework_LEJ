@@ -193,6 +193,128 @@
 			AND MEMBER_NO = #{memberNo}
 		</delete>
 		
+		
+		<!-- 게시글 삭제 -->
+		<update id="boardDelete">
+			UPDATE "BOARD" SET
+			BOARD_DEL_FL = 'Y'
+			WHERE BOARD_NO = #{boardNo}
+		</update>
+		
+		
+		
+		<!-- 
+		
+			useGeneratedKeys 속성 : DB 내부적으로 생성한 키(ex.시퀀스)를 사용.
+			useGeneratedKeys = "true" : JDBC getGeneratedKeys() 메서드 사용 허용.
+
+			* 마이바티스의 동적 SQL *
+			- SQL 구문에 작성되는 태그로
+			  프로그램 수행 중 추가적인 SQL 수행 / SQL 형태의 변형을 할 수 있음.
+			  (마이바티스 기눙 중 가장 강력한 기능) *****		
+
+			* 동적 SLQ(selectKey>
+			<selectKey> : INSERT/UPDATE에 사용된 키를 
+										원하는 변수/필드에 담아서 반환하는 태그
+
+			order : 메인 SQL이 수행되기 전(BEFOREM) 또는 후(AFTER)DP에
+							<selectKey>의 SQL이 수행되도록 순서를 지정하는 속성 
+							
+			KeyProperty : key를 담을 변수를 지정하는 속성
+
+		 -->
+		
+		<!-- 게시글 삽입 -->														<!-- // selectKey쓰려면 꼭 필요 -->
+		<insert id="boardWrite" parameterType="Board" useGeneratedKeys="true">
+		
+			<selectKey keyProperty="boardNo" resultType="_int" order="BEFORE">
+				SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+			</selectKey>  <!-- // 메인 구문 수행 전(BEFORE)에 selectKey를 수행해서 Board 객체에 담는다 -->
+
+			INSERT INTO BOARD
+      VALUES(#{boardNo},  <!--_ 시퀀스를 앞에서 조회했으므로 이부분을 boardNo로 변경 -->
+             #{boardTitle},
+             #{boardContent},
+	      	   DEFAULT, DEFAULT, DEFAULT, DEFAULT, 
+		         #{memberNo}, 
+	        	 #{boardCode})
+		</insert>
+		
+		
+		<!-- 게시글 첨부 이미지 삽입(리스트 형식) -->
+		<!-- 
+				동적 SQL <foreach>
+				- 특정 SQL 구문을 반복할 때 사용
+				- collection : 반복할 객체의 타입(list, set, map, array ...)
+				- item : collection 객체에서 하나씩 순서대로 꺼낸 요소
+				- index : 현재 인덱스를 나타내는 변수
+				- open : 반복 전 출력할 구문
+				- close : 반복이 끝난 후 출력할 구문
+				- separator :분리 기호(반복 사이 구분자)
+		 -->
+		<insert id="insertBoardImageList" parameterType="list">
+			INSERT INTO BOARD_IMG
+			SELECT SEQ_IMG_NO.NEXTVAL IMG_NO, A.* FROM
+			
+			<foreach collection="list" item="img" open="(" close=") A"	separator="UNION ALL">
+				SELECT #{img.imagePath} IMG_PATH,
+						   #{img.imageReName} IMG_RENAME,
+						   #{img.imageOriginal} IMG_ORIGINAL,
+						   #{img.imageOrder} IMG_ORDER,
+						   #{img.boardNo} BOARD_NO
+				FROM DUAL
+			</foreach>
+		</insert>
+		
+		
+		
+		<!-- 게시글 수정 -->
+		<update id="boardUpdate">
+			UPDATE BOARD SET
+			BOARD_TITLE = #{boardTitle},
+			BOARD_CONTENT = #{boardContent}
+			WHERE BOARD_NO = #{boardNo}
+		</update>
+		
+		
+		
+		<!-- 게시글 이미지 삭제 (게시글 수정)-->
+		<!-- //마이바티스는 파라미터 쓰는 법이 2가지
+			
+			#{key} == 'value' (양쪽 홑따옴표 추가) 
+				-> PreparedStatement (삽입, 조건절의 값)
+			
+			${key} == value (따옴표 X)
+				-> Statement (SQL 일부)
+			
+			 
+		 -->
+		<delete id="boardImageDelete">
+			DELETE FROM BOARD_IMG
+			${condition}		
+		</delete>
+		
+		
+		
+		<!-- 이미지 수정 -->
+		<update id="boardImageUpdate">
+			UPDATE BOARD_IMG SET
+			IMG_RENAME = #{imageReName},
+			IMG_ORIGINAL = #{imageOriginal}
+			WHERE BOARD_NO = #{boardNo}
+			AND IMG_ORDER = #{imageOrder}
+		</update>
+		
+		
+		
+		<!-- 이미지 삽입 -->
+		<insert id="boardImageInsert">
+			INSERT INTO BOARD_IMG 
+			VALUES(SEQ_IMG_NO.NEXTVAL, #{imagePath}, #{imageReName}, #{imageOriginal}, #{imageOrder}, #{boardNo})
+		</insert>
+		
+		
+		
 </mapper>
 
 

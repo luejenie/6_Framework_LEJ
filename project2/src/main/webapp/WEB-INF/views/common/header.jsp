@@ -72,7 +72,7 @@
                 <li><a href="#">FAQ</a></li>
                 <li><a href="#">1:1문의</a></li> --%>
 
-                <c:forEach var="boardType" items="${boardTypeList}">  <%--__정상작동하면 application에 올라와 있음 // intercetor 만든 이후--%>
+                <c:forEach var="boardType" items="${boardTypeList}">  <%--__정상작동하면 application에 올라와 있음 // interceptor 만든 이후--%>
                     <li>  
                         <a href="/board/${boardType.BOARD_CODE}">${boardType.BOARD_NAME}</a> <%-- __ DB의 컬럼명을 그대로 써주기 --%>
                     </li>

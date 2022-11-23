@@ -1,27 +1,35 @@
 package edu.kh.project.board.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.model.service.BoardService;
 import edu.kh.project.board.model.vo.Board;
+import edu.kh.project.common.Util;
 import edu.kh.project.member.model.vo.Member;
 
 
@@ -39,6 +47,7 @@ public class BoardController {
 	// /board/2?cp=2
 	// /board/3?cp=3
 	// /board/4?cp=4
+	
 	// -> @PathVariable 사용
 	//    URL 경로에 있는 값을 파라미터(변수)로 사용할 수 있게 하는 어노테이션
 	//	 + 자동으로 request scope로 등록되어 EL구문으로 jsp에서도 출력 가능
@@ -236,6 +245,181 @@ public class BoardController {
 	public int boardLikeDown(@RequestParam Map<String, Object> paramMap) {
 		return service.boardLikeDown(paramMap);
 	}
+	
+	
+	
+	// 게시글 삭제
+	@GetMapping("/board/{boardCode}/{boardNo}/delete")
+	public String boardDelete(@RequestHeader("referer") String referer, 
+								@PathVariable("boardNo") int boardNo,
+								@PathVariable("boardCode") int boardCode,
+								RedirectAttributes ra) {
+
+		// 게시글 번호를 이용해서 게시글을 삭제(BOARD_DEL_FL = 'Y' 수정)
+		int result = service.boardDelete(boardNo);
+		
+		String path = null;
+		String message = null;
+		
+		// 성공 시 : "삭제되었습니다" 메세지 전달 
+		// 해당 게시판 목록 1페이지로 리다이렉트
+		if(result > 0) {
+			
+			message = "삭제되었습니다.";
+			path = "/board/" + boardCode;  // + "?cp=1"  //위에 이미 required=false, defaultValue = 1이 적혀있음
+		
+		} else {
+			// 실패 시 : "게시글 삭제 실패" 메세지
+			// 요청 이전 주소(referer)로 리다이렉트
+			message = "게시글 삭제 실패";
+			path = referer;
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return "redirect:" + path;
+	}
+	
+	
+	
+	
+	// 게시글 작성 페이지 이동
+	@GetMapping("/write/{boardCode}")
+	public String boardWrite(@PathVariable("boardCode") int boardCode) {
+		return "board/boardWrite";
+	}
+	
+	
+	
+	
+	// _같은 이름으로 여러개 List<MultipartFiles>
+	// jsp -> 제목, 내용, 이미지(5개), 회원번호(Session-loginMember), 게시판번호(boardCode - PathVariable)
+	
+	
+	
+	// 게시글 작성
+	@PostMapping("/write/{boardCode}")
+	public String boardWrite( Board board,
+							  @RequestParam(value="images", required=false) List<MultipartFile> imageList,
+							  @SessionAttribute("loginMember") Member loginMember,
+							  @PathVariable("boardCode") int boardCode,
+							  RedirectAttributes ra,
+							  HttpSession session,  //_저장위치
+							  @RequestHeader("referer") String referer) throws IOException {
+		
+		// 1. boardCode를 board객체에 세팅
+		board.setBoardCode(boardCode);
+		
+		
+		// 2. 로그인한 회원의 번호를 board 객체 세팅
+		board.setMemberNo(loginMember.getMemberNo());
+		
+		
+		// 3. 업로드된 파일의 웹 접근경로 / 서버 내부 경로 를 변수에 저장
+		String webPath = "/resources/images/board/";
+		
+							//_어플리케이션 스코프
+		String folderPath = session.getServletContext().getRealPath(webPath); 
+		// -> /resources/images/board/까지의 컴퓨터 저장 경로 반환
+		
+		
+		// 4. 게시글 삽입 서비스 호출
+		int boardNo = service.boardWrite(board, imageList, webPath, folderPath);
+		
+		String message = null;
+		String path = null;
+		
+		if(boardNo > 0) {
+			message = "게시글이 등록되었습니다.";
+			path ="/board/" + boardCode + "/" + boardNo;
+				//  /board/1/2003 (상세조회 요청 주소)
+			
+		} else {
+			message = "게시글 작성 실패";
+			path = referer;
+		
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return "redirect:" +  path;
+		
+	}
+	
+
+	
+	
+	// 게시글 수정 화면 전환
+	@GetMapping("/board/{boardCode}/{boardNo}/update")
+	public String boardUpdate(@PathVariable("boardCode") int boardCode,
+							  @PathVariable("boardNo") int boardNo,
+							  Model model) {
+		
+		Board board = service.selectBoardDetail(boardNo); // 조회
+		
+		// 개행문자 처리 해제
+		board.setBoardContent(Util.newLineClear(board.getBoardContent()));
+		
+		
+		model.addAttribute("board", board);
+	
+		return "board/boardUpdate";
+		
+	}
+	
+	
+	
+	// 게시글 수정
+	@PostMapping("/board/{boardCode}/{boardNo}/update")
+	public String boardUpdate(Board board,  // boardTitle, boardContent가 들어있음 (커맨드 객체)
+							  @PathVariable("boardCode") int boardCode,  // 게시판 번호
+							  @PathVariable("boardNo") int boardNo, // 수정할 게시글 번호
+							  @RequestParam(value="cp", required=false, defaultValue="1") int cp,// 현재 페이지
+							  @RequestParam(value="deleteList", required=false) String deleteList, // 삭제된 이미지 순서
+							  @RequestParam(value="images", required=false) List<MultipartFile> imageList, // 업로드한 파일 목록
+							  @RequestHeader("referer") String referer, // 이전 요청 주소
+							  HttpSession session,  // 서버파일 저장 경로 얻기 용도
+							  RedirectAttributes ra // 리다이렉트 시 응답 메세지 전달용
+ 							  ) throws Exception {
+
+		// 1. board 객체에 boardNo 세팅
+		board.setBoardNo(boardNo);
+		
+		// 2. 이미지 저장 경로 얻어오기
+		String webPath = "/resources/images/board/";
+		String folderPath = session.getServletContext().getRealPath(webPath);  //_서버 내에서 webPath폴더까지의 진짜 경로를 반환해라
+		
+		// 3. 게시글 수정 서비스 호출
+		int result = service.boardUpdate(board, imageList, webPath, folderPath, deleteList);
+		
+		// 4. 서비스 결과에 따른 응답 제어
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			// 상세조회 : /board/2/2007?cp=2
+			path = "/board/" + boardCode + "/" + boardNo + "?cp=" + cp;
+			message = "게시글이 수정되었습니다.";
+			
+		} else {
+			
+			path = referer;
+			message = "게시글 수정 실패...";
+			
+		}
+
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
