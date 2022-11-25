@@ -121,7 +121,7 @@ selectEmail.addEventListener("click", (e) => {
                 // 내용 추가
                 h4.innerText = inputEmail.value + "은/는 존재하지 않습니다.";
 
-                // appen(요소) : 마지막 자식으로 추가
+                // append(요소) : 마지막 자식으로 추가
                 // prepend(요소) : 첫 번째 자식으로 추가
                 // after(요소) : 다음(이후)에 추가
                 // before(요소) : 이전에 추가
@@ -132,7 +132,7 @@ selectEmail.addEventListener("click", (e) => {
                     selectEmail.nextElementSibling.remove();
                 }
 
-                // selectEmail의 다음 요소로 추가(.afteer(요소))
+                // selectEmail의 다음 요소로 추가(.after(요소))
                 selectEmail.after(h4);
 
 
