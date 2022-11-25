@@ -27,15 +27,16 @@
                     
                     <p class="comment-content">${comment.commentContent}</p>
 
-                    <%-- 로그인 상태일 경우에 답근 버튼 노출 --%>
+                    <%-- 로그인 상태일 경우에 답글 버튼 노출 --%>
                     <c:if test="${!empty loginMember}">
                         <div class="comment-btn-area">
-                            <button>답글</button>   
+                            <%-- this == 클릭된 답글 버튼 //_왜들어가나? 답글을 누르는 위치에 입력 영역이 생김. 이를 위해 this가 필요--%>
+                            <button onclick="showInsertComment(${comment.commentNo}, this)">답글</button>   
                              
                           <%-- 로그인 회원 == 댓글 작성자 같으면 수정/삭제 버튼 노출 --%>   
                           <c:if test="${loginMember.memberNo == comment.memberNo}">
-                                  <button>수정</button>     
-                                  <button>삭제</button>
+                                  <button onclick="showUpdateComment(${comment.commentNo}, this)">수정</button>     
+                                  <button onclick="deleteComment(${comment.commentNo})">삭제</button>
                           </c:if>
                           
                         </div>

@@ -17,7 +17,10 @@ goToListBtn.addEventListener("click", () => {
 
     const pathname = location.pathname; // /board/1/1500
     const queryString = location.search;  // ?cp=7
-    const url = pathname.substring(0, pathname.lastIndexOf("/")) + queryString;  //  /board/1?cp=7
+
+    //  /board/1?cp=7&key=t&query=테스트  _검색한 게시글 들어갔다가 나왔을 때 검색한 목록 유지하도록 추가
+    //                                    _게시글 상세조회 주소에 ${sURL}추가
+    const url = pathname.substring(0, pathname.lastIndexOf("/")) + queryString;  
 
     location.href = url;
 });
