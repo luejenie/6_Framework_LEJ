@@ -300,7 +300,7 @@ public class BoardController {
 	
 	
 	
-	// _같은 이름으로 여러개 List<MultipartFiles>
+	// _같은 이름으로 여러개 List<MultipartFiles> 업로드한 파일을 컨트롤러에서 처리할 때
 	// jsp -> 제목, 내용, 이미지(5개), 회원번호(Session-loginMember), 게시판번호(boardCode - PathVariable)
 	
 	

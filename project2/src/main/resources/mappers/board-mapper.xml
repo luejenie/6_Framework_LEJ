@@ -407,6 +407,12 @@
 		
 		
 		
+		<!-- 이미지 목록 조회 -->
+		<select id="selectImageList2" resultType="string">
+			SELECT IMG_RENAME FROM BOARD_IMG
+		</select>
+		
+		
 </mapper>
 
 

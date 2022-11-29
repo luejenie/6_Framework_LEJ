@@ -349,6 +349,13 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	
+	// 이미지 목록 조회
+	@Override
+	public List<String> selectImageList() {
+		return dao.selectImageList();
+	}
+	
+	
 	
 	
 	
