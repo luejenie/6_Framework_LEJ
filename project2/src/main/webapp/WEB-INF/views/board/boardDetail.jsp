@@ -44,7 +44,16 @@
                         <img src="${board.profileImage}">
                     </c:if>
 
-                    <span>${board.memberNickname}</span>
+                    <%-- <span>${board.memberNickname}</span> --%>
+                    <!-- 채팅방 입장 -->
+                    <c:choose>                                                  <%-- /자기자신한테 채팅X --%>
+                       <c:when test="${empty loginMember or loginMember.memberNo == board.memberNo}">  
+                          <span>${board.memberNickname}</span>
+                       </c:when>
+                       <c:otherwise>
+                          <span><a href="/chatting/enter?targetNo=${board.memberNo}">${board.memberNickname}</a></span>
+                       </c:otherwise>
+                    </c:choose>
 
                     <!-- 좋아요 -->
                     <span class="like-area">

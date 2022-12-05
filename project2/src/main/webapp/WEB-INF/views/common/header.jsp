@@ -62,7 +62,7 @@
 
         </header>
 
-
+        <%-- 네비게이션 메뉴 --%>
         <nav>
             <ul>
                 <!-- li*5>a[] -->
@@ -77,6 +77,10 @@
                         <a href="/board/${boardType.BOARD_CODE}">${boardType.BOARD_NAME}</a> <%-- __ DB의 컬럼명을 그대로 써주기 --%>
                     </li>
                 </c:forEach>
+
+                <li>
+                    <a href="/chatting">채팅</a>
+                </li>
             </ul>
         </nav>
 

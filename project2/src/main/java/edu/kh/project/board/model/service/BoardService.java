@@ -10,7 +10,7 @@ import edu.kh.project.board.model.vo.Board;
 
 public interface BoardService {
 
-	/** 게시판 이름 목록 조회
+	/** 게시판 이름 목록 조회 (인터셉터)
 	 * @return boardTypeList
 	 */
 	List<Map<String, Object>> selectBoardType();
