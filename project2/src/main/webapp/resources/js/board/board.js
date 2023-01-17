@@ -1,4 +1,4 @@
-// 목록으로 버튼
+// * 목록으로 버튼
 const goToListBtn = document.getElementById("goToListBtn");
 
 goToListBtn.addEventListener("click", () => {
@@ -19,14 +19,14 @@ goToListBtn.addEventListener("click", () => {
     const queryString = location.search;  // ?cp=7
 
     //  /board/1?cp=7&key=t&query=테스트  _검색한 게시글 들어갔다가 나왔을 때 검색한 목록 유지하도록 추가
-    //                                    _게시글 상세조회 주소에 ${sURL}추가
+    //                                    _게시글 조회 주소(boardList.jsp)에 ${sURL}추가
     const url = pathname.substring(0, pathname.lastIndexOf("/")) + queryString;  
 
     location.href = url;
 });
 
 
-// 좋아요 버튼 클릭 시 동작
+// * 좋아요 버튼 클릭 시 동작
 // (전역변수 memberNo, boardNo 사용 (boardDetail.jsp의 scripat구문에 선언))
 const boardLike = document.getElementById("boardLike");
 
@@ -87,7 +87,7 @@ boardLike.addEventListener("click", e => {
 })
 
 
-// 게시글 삭제
+// * 게시글 삭제
 const deleteBtn = document.getElementById("deleteBtn");
 
 deleteBtn.addEventListener("click", () => {
@@ -101,7 +101,7 @@ deleteBtn.addEventListener("click", () => {
 })
 
 
-// 수정 버튼
+// * 수정 버튼
 const updateBtn = document.getElementById("updateBtn");
 
 updateBtn.addEventListener("click", () => {
